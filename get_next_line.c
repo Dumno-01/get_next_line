@@ -16,10 +16,40 @@ char	*rm_line(char *buff)
 {}
 
 char	*get_line(char *str)
-{}
+{
+	int i;
+	char *line;
+	int j;
+
+	j = 0;
+	i = ft_strnlen(str);
+	line = malloc(sizeof (char) * i + 1);
+	while (j != '\n' || j != '\0')
+	{
+		line[j] = str[j];
+		j++;
+	}
+	return(line);
+}
 
 char	*readbuff(int fd, char *str)
-{}
+{
+	int i;
+	int j;
+	int k;
+
+	while (i < j)
+	{
+		if (i == '\n' || i == '\0')
+		{
+			k++;
+			break;
+		}
+		i++;
+	}
+	if (k > 0)
+		
+}
 
 char	*get_next_line(int fd)
 {
