@@ -19,7 +19,7 @@ char	*rm_line(char *str, char *line)
 	i = ft_strchr(str, line);
 	tmp = ft_strdup(&str[i + 1], tmp);
 	free(str);
-
+	return(tmp);
 }
 
 char	*get_line(char *str)
