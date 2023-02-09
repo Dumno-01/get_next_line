@@ -46,14 +46,14 @@ char	*readbuff(int fd, char *str)
 	int i;
 
 	i = BUFFER_SIZE;
-	while (find_newline(buff) != 1)
+	while (find_newline(buff) != 1 && find_newline(str) != 1)
 	{
 		if (i != BUFFER_SIZE)
 			break;
 		i = read(fd, buff, BUFFER_SIZE);
 		if (i = -1)
 			return(NULL);
-		strtmp = ft_strdup(str, strtmp);
+		strtmp = ft_strdup(str);
 		if (str != NULL)
 			free(str);
 		str = ft_strjoin(strtmp, buff);
