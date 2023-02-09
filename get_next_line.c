@@ -44,12 +44,19 @@ char	*readbuff(int fd, char *str)
 	char *buff[BUFFER_SIZE + 1];
 	char *strtmp;
 	int i;
+
+	i = BUFFER_SIZE;
 	while (find_newline(buff) != 1)
 	{
+		if (i != BUFFER_SIZE)
+			break;
 		i = read(fd, buff, BUFFER_SIZE);
+		if (i = -1)
+			return(NULL);
 		strtmp = ft_strdup(str, strtmp);
-		free(str);
-		str = ft_strjoin(str, strtmp);
+		if (str != NULL)
+			free(str);
+		str = ft_strjoin(strtmp, buff);
 		free (strtmp);
 	}
 	return (str);
