@@ -12,8 +12,15 @@
 
 #include "get_next_line.h"
 
-char	*rm_line(char *buff)
-{}
+char	*rm_line(char *str, char *line)
+{
+	char *tmp;
+	int i;
+	i = ft_strchr(str, line);
+	tmp = ft_strdup(&str[i + 1], tmp);
+	free(str);
+
+}
 
 char	*get_line(char *str)
 {
@@ -34,31 +41,27 @@ char	*get_line(char *str)
 
 char	*readbuff(int fd, char *str)
 {
+	char *buff[BUFFER_SIZE + 1];
+	char *strtmp;
 	int i;
-	int j;
-	int k;
-
-	while (i < j)
+	while (find_newline(buff) != 1)
 	{
-		if (i == '\n' || i == '\0')
-		{
-			k++;
-			break;
-		}
-		i++;
+		i = read(fd, buff, BUFFER_SIZE);
+		strtmp = ft_strdup(str, strtmp);
+		free(str);
+		str = ft_strjoin(str, strtmp);
+		free (strtmp);
 	}
-	if (k > 0)
-		
+	return (str);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*str;
 	char		*line;
-	char		*buff;
-
-	buff = readbuff(fd, str);
-	line = get_line(buff);
-	str = rm_line(buff);
+	
+	str = readbuff(fd, str);
+	line = get_line(str);
+	str = rm_line(str, line);
 	return (line);
 }
