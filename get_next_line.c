@@ -11,64 +11,110 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <fcntl.h>
+#include <stdio.h>
 
-char	*rm_line(char *str, char *line)
+static char	*rm_line(char *str)
 {
 	char *tmp;
 	int i;
-	i = ft_strchr(str, line);
-	tmp = ft_strdup(&str[i + 1], tmp);
+	i = ft_strchr(str, '\n');
+	if (str [i] == '\n')
+		tmp = ft_strdup(&str[i + 1]);
+	if (str[i] == '\0')
+		tmp = NULL;
 	free(str);
 	return(tmp);
 }
 
-char	*get_line(char *str)
+static char	*get_line(char *str)
 {
 	int i;
 	char *line;
 	int j;
 
 	j = 0;
-	i = ft_strnlen(str);
-	line = malloc(sizeof (char) * i + 1);
+	i = 0;
+	while (str[i] != '\0' || str[i] != '\n')
+		i++;
+	if (str[i] == '\0')
+		line = malloc(sizeof (char) * i + 1);
+	if (str[i] == '\n')
+		line = malloc(sizeof (char) * i + 2);
 	while (j != '\n' || j != '\0')
 	{
 		line[j] = str[j];
 		j++;
 	}
+	if (str[j] == '\n')
+	{
+		line[j] = '\n';
+		j++;
+	}
+	line[j] = '\0';
 	return(line);
 }
 
-char	*readbuff(int fd, char *str)
+static char	*readbuff(int fd, char *str)
 {
-	char *buff[BUFFER_SIZE + 1];
-	char *strtmp;
+	char buff[BUFFER_SIZE + 1];
+	//char *strtmp;
 	int i;
 
 	i = BUFFER_SIZE;
-	while (find_newline(buff) != 1 && find_newline(str) != 1)
+	while (i > 0)
 	{
-		if (i != BUFFER_SIZE)
-			break;
 		i = read(fd, buff, BUFFER_SIZE);
-		if (i = -1)
+		if (i == -1)
 			return(NULL);
-		strtmp = ft_strdup(str);
-		if (str != NULL)
-			free(str);
-		str = ft_strjoin(strtmp, buff);
-		free (strtmp);
+		// if (str != NULL)
+		// {
+	 	// 	strtmp = ft_strdup(str);
+		// }
+		 buff[i] = 0;
+		// if (strtmp)
+		// 	str = ft_strjoin(strtmp, buff);
+//		else
+		{
+			str = ft_strdup(buff);
+			printf("%s\n", str);
+		}
+		// free (strtmp);
+		if (find_newline(buff, BUFFER_SIZE) != 1)
+			break;
 	}
+//	printf("%s\n", str);
 	return (str);
 }
+
+int		ft_strlen(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}	
+	return (i);
+}
+
 
 char	*get_next_line(int fd)
 {
 	static char	*str;
 	char		*line;
-	
+
+	line = NULL;	
 	str = readbuff(fd, str);
 	line = get_line(str);
-	str = rm_line(str, line);
+	str = rm_line(str);
 	return (line);
+}
+
+int main()
+{
+	int fd;
+	fd = open("1.txt", O_RDONLY);
+	get_next_line(fd);
 }
