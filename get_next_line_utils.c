@@ -56,16 +56,32 @@ char	*ft_strdup(char *src)
 	return (s2);
 }
 
-int		ft_strchr(char *s, int c)
+int		ft_strchr(char *s, int c, int index)
 {
 	size_t	i;
 	char	*b;
+	int		j;
 
 	b = (char *)s;
 	i = 0;
-	while (b[i] && b[i] != (char)c)
-		i++;
-	return (i);
+	j = 0;
+	if (index = 1)
+	{
+		while (b[i] && b[i] != (char)c)
+			i++;
+		return (i);
+	}
+	if (index = 2)
+	{
+		while (j <= bs)
+   		{
+		    if (s[j] == '\n' || s[j] == '\0')
+            return(1);
+			j++;
+		}
+		return (0);
+	}
+	return (0);
 }
 
 size_t	ft_strlcat(char *dest, char *src, size_t size)
@@ -90,16 +106,14 @@ size_t	ft_strlcat(char *dest, char *src, size_t size)
 	return (t_dest + t_src);
 }
 
-int     find_newline(char *s, int bs)
+int		ft_strlen(char *str)
 {
 	int i;
 
 	i = 0;
-	while (i <= bs)
-    {
-	    if (s[i] == '\n' || s[i] == '\0')
-            return(1);
+	while (str[i] != '\0')
+	{
 		i++;
-    }
-	return (0);
+	}	
+	return (i);
 }
