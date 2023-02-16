@@ -35,13 +35,13 @@ static char	*get_line(char *str)
 
 	j = 0;
 	i = 0;
-	while (str[i] != '\0' || str[i] != '\n')
+	while (str[i] != '\0' && str[i] != '\n')
 		i++;
 	if (str[i] == '\0')
 		line = malloc(sizeof (char) * i + 1);
 	if (str[i] == '\n')
 		line = malloc(sizeof (char) * i + 2);
-	while (j != '\n' || j != '\0')
+	while (str[j] != '\n' && str[j] != '\0')
 	{
 		line[j] = str[j];
 		j++;
@@ -58,32 +58,31 @@ static char	*get_line(char *str)
 static char	*readbuff(int fd, char *str)
 {
 	char buff[BUFFER_SIZE + 1];
-	//char *strtmp;
+	char *strtmp;
 	int i;
 
 	i = BUFFER_SIZE;
+	strtmp = NULL;
 	while (i > 0)
 	{
 		i = read(fd, buff, BUFFER_SIZE);
 		if (i == -1)
 			return(NULL);
-		// if (str != NULL)
-		// {
-	 	// 	strtmp = ft_strdup(str);
-		// }
-		 buff[i] = 0;
-		// if (strtmp)
-		// 	str = ft_strjoin(strtmp, buff);
-//		else
+		if (str != NULL)
+		{
+	 		strtmp = ft_strdup(str);
+		}
+		buff[i] = 0;
+		if (strtmp)
+			str = ft_strjoin(strtmp, buff);
+		else
 		{
 			str = ft_strdup(buff);
-			printf("%s\n", str);
 		}
-		// free (strtmp);
-		if (find_newline(buff, BUFFER_SIZE) != 1)
+		free (strtmp);
+		if (i < BUFFER_SIZE || find_newline(buff, BUFFER_SIZE) == 1)
 			break;
 	}
-//	printf("%s\n", str);
 	return (str);
 }
 
@@ -114,7 +113,16 @@ char	*get_next_line(int fd)
 
 int main()
 {
+	int i = 0;
 	int fd;
+	char *line;
 	fd = open("1.txt", O_RDONLY);
-	get_next_line(fd);
+	line = get_next_line(fd);
+	while (line != NULL && i < 8)
+	{
+		printf("%s", line);
+		free(line);
+		line = get_next_line(fd);
+		i++;
+	}
 }
