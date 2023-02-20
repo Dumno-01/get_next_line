@@ -33,6 +33,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	newstr[0] = '\0';
 	ft_strlcat (newstr, s1, len1 + 1);
 	ft_strlcat (newstr, s2, len1 + len2 + 1);
+	free(s1);
 	return (newstr);
 }
 
@@ -56,7 +57,7 @@ char	*ft_strdup(char *src)
 	return (s2);
 }
 
-int		ft_strchr(char *s, int c, int index)
+int		ft_strchr(char *s, char c, int index)
 {
 	size_t	i;
 	char	*b;
@@ -73,10 +74,10 @@ int		ft_strchr(char *s, int c, int index)
 	}
 	if (index = 2)
 	{
-		while (j <= bs)
+		while (j <= BUFFER_SIZE)
    		{
-		    if (s[j] == '\n' || s[j] == '\0')
-            return(1);
+		    if (s[j] == c || s[j] == '\0')
+            	return(1);
 			j++;
 		}
 		return (0);

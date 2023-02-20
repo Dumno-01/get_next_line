@@ -21,7 +21,7 @@
 
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(char *src);
-int     ft_strchr(char *s, int c);
+int     ft_strchr(char *s, char c, int index);
 size_t	ft_strlcat(char *dest, char *src, size_t size);
 int     find_newline(char *s, int bs);
 int     ft_strlen(char *str);
