@@ -20,15 +20,20 @@ static char	*rm_line(char *str)
 	int		i;
 	int		j;
 
+	tmp = NULL;
 	i = ft_strchr(str, '\n', 1);
 	if (str[i] == '\n')
 	{
 		tmp = ft_strdup(&str[i + 1]);
-			if (!tmp)
-				return (NULL);
+		if (!tmp)
+			return (free(str), NULL);
 	}
 	if (str[i] == '\0')
-		tmp = NULL;
+	{
+		tmp = ft_strdup(&str[i]);
+		if (!tmp)
+			return (free(str), NULL);
+	}
 	free(str);
 	return(tmp);
 }
@@ -73,17 +78,16 @@ static char	*readbuff(int fd, char *str, int i)
 			return(NULL);
 		if (strtmp[i] != '\0')	
 			strtmp[i] = 0;
-		if (str)
+		if (str && str[0] != 0)
 		{
 			str = ft_strjoin(str, strtmp);
-			if (str == NULL)
+			if (!str)
 				return(NULL);
 		}
 		else
 			str = ft_strdup(strtmp);
-			if (str == NULL)
+			if (!str)
 				return(NULL);
-				
 		if (i < BUFFER_SIZE || ft_strchr(strtmp, '\n', 2) == 1)
 			break;
 	}
@@ -97,7 +101,7 @@ char	*get_next_line(int fd)
 	int			i;
 
 	i = BUFFER_SIZE;
-	line = NULL;	
+	line = NULL;
 	str = readbuff(fd, str, i);
 	if (!str)
 		return (NULL);
@@ -105,8 +109,10 @@ char	*get_next_line(int fd)
 	if (!line)
 		return (NULL);
 	if (ft_strlen(str) == 0)
-		line = NULL;
+		return (free(line), NULL);
 	str = rm_line(str);
+	if (!str)
+		return (NULL);
 	return (line);
 }
 
@@ -121,5 +127,10 @@ int main()
 		printf("%s", line);
 		free(line);
 		line = get_next_line(fd);
+		//line = NULL;
 	}
+	free(line);
+	close(fd);
+	line = NULL;
+	return (0);
 }

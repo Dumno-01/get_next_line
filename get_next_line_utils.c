@@ -66,15 +66,15 @@ int		ft_strchr(char *s, char c, int index)
 	b = (char *)s;
 	i = 0;
 	j = 0;
-	if (index = 1)
+	if (index == 1)
 	{
 		while (b[i] && b[i] != (char)c)
 			i++;
 		return (i);
 	}
-	if (index = 2)
+	if (index == 2)
 	{
-		while (j <= BUFFER_SIZE)
+		while (j < BUFFER_SIZE)
    		{
 		    if (s[j] == c || s[j] == '\0')
             	return(1);
