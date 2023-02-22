@@ -16,7 +16,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 1
 # endif
 
 char	*ft_strjoin(char *s1, char *s2);
@@ -25,4 +25,5 @@ int     ft_strchr(char *s, char c, int index);
 size_t	ft_strlcat(char *dest, char *src, size_t size);
 int     find_newline(char *s, int bs);
 int     ft_strlen(char *str);
+char	*get_next_line(int fd);
 # endif
