@@ -57,31 +57,15 @@ char	*ft_strdup(char *src)
 	return (s2);
 }
 
-int		ft_strchr(char *s, char c, int index)
+char	*ft_strchr(char *s, char c)
 {
 	size_t	i;
-	char	*b;
-	int		j;
 
-	b = (char *)s;
 	i = 0;
-	j = 0;
-	if (index == 1)
-	{
-		while (b[i] && b[i] != (char)c)
-			i++;
-		return (i);
-	}
-	if (index == 2)
-	{
-		while (j < BUFFER_SIZE)
-   		{
-		    if (s[j] == c || s[j] == '\0')
-            	return(1);
-			j++;
-		}
-		return (0);
-	}
+	while (s[i] && s[i] != c)
+		i++;
+	if (s[i])
+		return (&s[i]);
 	return (0);
 }
 

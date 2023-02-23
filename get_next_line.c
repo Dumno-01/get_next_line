@@ -28,7 +28,7 @@ static void rm_line2(char *line, char *str)
 	else
 	{
 		i++;
-		while (line[i] && str[j])
+		while (line[i] && j < BUFFER_SIZE)
 		{
 			str[j] = line[i];
 			i++;
@@ -59,6 +59,8 @@ static char	*get_line2(char *line)
 	i = 0;
 	while (line[i] && line[i] != '\n')
 		i++;
+	if (line[i])
+		i++;
 	new = malloc(sizeof(char) * (i + 1));
 	if (!new)
 		return (free(line), NULL);
@@ -83,10 +85,16 @@ static char	*readbuff(int fd, char *str, int i)
 	if (!line)
 		return (NULL);
 	line[0] = 0;
-	while (i > 0)
+	if (str[0])
+	{
+		line = ft_strjoin(line, str);
+		if (!line)
+			return (NULL);
+	}
+	while (i > 0 && !ft_strchr(str, '\n'))
 	{
 		i = read(fd, str, BUFFER_SIZE);
-		if (i == -1)
+		if (!i && str[0] == 0)
 			return(free(line), NULL);
 		str[i] = 0;
 		if (str[0])
@@ -97,8 +105,6 @@ static char	*readbuff(int fd, char *str, int i)
 		}
 		else
 			return (free(line), NULL);
-		if (i < BUFFER_SIZE || ft_strchr(str, '\n', 2))
-			break;
 	}
 	return (line);
 }
@@ -107,14 +113,17 @@ char	*get_next_line(int fd)
 {
 	static char	*str;
 	char		*line;
-	int			i;
 
+	if (BUFFER_SIZE < 1 || read(fd, 0, 0) == -1)
+		return (free(str), str = NULL, NULL);
 	if (!str)
+	{
 		str = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!str)
-		return (NULL);
-	i = BUFFER_SIZE;
-	line = readbuff(fd, str, i);
+		if (!str)
+			return (NULL);
+		ft_memset(str, 0, BUFFER_SIZE + 1);
+	}
+	line = readbuff(fd, str, 1);
 	if (!line)
 		return (free(str), str = NULL, NULL);
 	rm_line2(line, str);
@@ -126,20 +135,18 @@ char	*get_next_line(int fd)
 
 int main()
 {
-	int	i;
 	int fd;
 	char *line;
 	fd = open("3.txt", O_RDONLY);
-	line = get_next_line(fd);
+	//line = get_next_line(fd);
 
-	i = 0;
-	while (line != NULL)
+	while (1)
 	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
 		printf("%s", line);
 		free(line);
-		line = get_next_line(fd);
-		//line = NULL;
-		i++;
 	}
 	close(fd);
 	free (line);

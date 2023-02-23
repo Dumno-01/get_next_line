@@ -16,12 +16,12 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 100
 # endif
 
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(char *src);
-int     ft_strchr(char *s, char c, int index);
+char    *ft_strchr(char *s, char c);
 size_t	ft_strlcat(char *dest, char *src, size_t size);
 int     find_newline(char *s, int bs);
 int     ft_strlen(char *str);
