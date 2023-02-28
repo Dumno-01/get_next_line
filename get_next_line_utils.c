@@ -15,26 +15,28 @@
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char	*newstr;
-	size_t	len1;
-	size_t	len2;
+	size_t	i;
+	size_t	j;
+	char	*join;
 
-	if (s1 == NULL && s2 == NULL)
-		return (NULL);
-	if (s1 == NULL)
-		return (ft_strdup((char *)s2));
-	if (s2 == NULL)
-		return (ft_strdup((char *)s1));
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	newstr = malloc(sizeof(char) * (len1 + len2 + 1));
-	if (!newstr)
-		return (NULL);
-	newstr[0] = '\0';
-	ft_strlcat (newstr, s1, len1 + 1);
-	ft_strlcat (newstr, s2, len1 + len2 + 1);
-	free(s1);
-	return (newstr);
+	i = 0;
+	j = 0;
+	join = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!join)
+		return (free(s1), NULL);
+	while (s1[i])
+	{
+		join[i] = s1[i];
+		i++;
+	}
+	while (s2[j])
+	{
+		join[i] = s2[j];
+		i++;
+		j++;
+	}
+	join[i] = 0;
+	return (free(s1), join);
 }
 
 char	*ft_strdup(char *src)
@@ -66,7 +68,7 @@ char	*ft_strchr(char *s, char c)
 		i++;
 	if (s[i])
 		return (&s[i]);
-	return (0);
+	return (NULL);
 }
 
 size_t	ft_strlcat(char *dest, char *src, size_t size)
@@ -91,9 +93,9 @@ size_t	ft_strlcat(char *dest, char *src, size_t size)
 	return (t_dest + t_src);
 }
 
-int		ft_strlen(char *str)
+int	ft_strlen(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] != '\0')
